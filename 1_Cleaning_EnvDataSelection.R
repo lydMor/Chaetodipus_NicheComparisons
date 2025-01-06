@@ -16,6 +16,17 @@ for (i in 1:nrow(MouseDist_EVERYTHING)){
 ### now just get your dist data and the group cat: 
 Dist<- MouseDist_EVERYTHING %>% dplyr::select(Long, Lat, GroupCat, species, TEST_LOCALE)
 
+### do some automatic cleaning/checking: 
+dup1DF <- cc_dupl(Dist, lon = "decimalLongitude", lat = "decimalLatitude", species = "GroupCat")
+inst_DF <- cc_inst(dup1DF, lon = "decimalLongitude", lat = "decimalLatitude", species = "GroupCat")
+capDF <- cc_cap(inst_DF, lon = "decimalLongitude", lat = "decimalLatitude", species = "GroupCat")
+cenDF <- cc_cen(capDF, lon = "decimalLongitude", lat = "decimalLatitude", species = "GroupCat")
+eqDF <- cc_equ(cenDF, lon = "decimalLongitude", lat = "decimalLatitude")
+valDF <- cc_val(eqDF, lon = "decimalLongitude", lat = "decimalLatitude")
+zeroDF <- cc_zero(valDF, lon = "decimalLongitude", lat = "decimalLatitude")
+gbifDF <- cc_gbif(zeroDF, lon = "decimalLongitude", lat = "decimalLatitude")
+
+Dist<- gbifDF
 ##### NOW GET ENVIRONEMENTAL VARIABLES: 
 library(raster)
 library(terra)
